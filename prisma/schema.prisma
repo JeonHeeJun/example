@@ -25,13 +25,20 @@ model User{
   likes Like[]
   tags Tag[]
 }
+model Author{
+  id Int @id  @default(autoincrement())
+  name String @unique
+  sayings Saying[]
 
+}
 model Saying{
   id  Int @id @default(autoincrement())
   createdAt DateTime @default(now())
   updateAt DateTime @updatedAt
   user User @relation(fields: [userId],references:[id])
+  author Author @relation(fields: [authorId],references:[id])
   comments Comment[]
+  authorId Int
   userId Int
   text String
   tags Tag[]

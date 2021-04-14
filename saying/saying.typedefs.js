@@ -4,6 +4,7 @@ export default gql`
 type Saying{
     id: Int!
     user: User!
+    author:Author!
     createdAt:String!
     updateAt:String!
     tags: [Tag]
@@ -11,13 +12,7 @@ type Saying{
     totalLikes:Int!
     totalComments:Int!
     isMine: Boolean!
-}
-type Tag{
-    id:Int!
-    name:String!
-    sayings(take:Int!, lastId:Int): [Saying]
-    totalSayings:Int!
-    
+    isLike: Boolean!
 }
 type Like{
     id:Int!

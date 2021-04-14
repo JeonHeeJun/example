@@ -25,6 +25,14 @@ export default {
             if(existingUser){
                 throw new Error("this username/password is already taken.")
             }
+            const existingAuthor = await client.author.findFirst({
+                where:{
+                    name
+                }
+            })
+            if(existingAuthor){
+                throw new Error("this username is already taken by author name.")
+            }
             const uglyPassword = await bcrypt.hash(password,10)
             await client.user.create({data:{
                 name, email, password:uglyPassword

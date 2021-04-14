@@ -7,6 +7,12 @@ export default {
                 where:{id:userId}
             })
         },
+        author:({authorId})=>{
+            return client.author.findUnique({
+                where:{id:authorId}
+            })
+
+        },
         tags:({id})=>client.tag.findMany({
             where:{
                 sayings:{
@@ -27,26 +33,20 @@ export default {
         isMine:({userId},_,{loggedUser})=>{
             if(!loggedUser) return false;
             return (loggedUser.id === userId)},
-    },
-    Tag:{
-        totalSayings:({id})=>client.saying.count({
-            where:{
-                tags:{
-                    some:{
-                        id
-                    }
+        isLike:async({id},_,{loggedUser})=>{
+            if(!loggedUser) return false;
+
+            const likeWhere = {
+                sayingId_userId:{
+                    userId: loggedUser.id,
+                    sayingId:id,
                 }
             }
-        }),
-        sayings:({id},{take,lastId})=>client.tag.findUnique({//나중에 search식으로 수정필요.
-            where:{
-                id
-            }
-        }).sayings({
-            take,
-            skip:lastId? 1:0,
-            ...(lastId && {cursor:{id:lastId}})
-        })
-    }
-
+            const like = await client.like.findUnique({
+                where: likeWhere
+            })
+            if(!like) return false
+            else return true;
+        }
+    },
 }

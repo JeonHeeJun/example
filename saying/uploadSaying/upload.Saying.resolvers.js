@@ -3,7 +3,7 @@ import { protextResolver } from "../../users/users.utils";
 
 export default {
     Mutation:{
-        uploadSaying:protextResolver(async(_,{text,tag},{loggedUser})=>{
+        uploadSaying:protextResolver(async(_,{text,tag,author},{loggedUser})=>{
             //console.log(tag)
             const tagObj = tag.map((name)=>({
                 where:{name},
@@ -17,6 +17,12 @@ export default {
                     user:{
                         connect:{
                             id:loggedUser.id,
+                        }
+                    },
+                    author:{
+                        connectOrCreate:{
+                          where:{name:author},
+                          create:{name:author}  
                         }
                     },
                     tags:{

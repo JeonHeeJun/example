@@ -12,12 +12,20 @@ export default {
             //user, text, tag
             const all = record.map((row)=>
             ({
-                user:{
+                author:{
                     connectOrCreate:{
                         where:{name:row[0]},
                         create:{name:row[0]}
                     }
                 },
+                user:{
+                    connectOrCreate:{
+                        where:{name:"명언"},
+                        create:{name:"명언"}
+                    }
+
+                }
+                ,
                 text:row[1],
                 tags:{
                     connectOrCreate: JSON.parse(row[2].replaceAll('\'','\"')).map((name)=>({
@@ -27,10 +35,11 @@ export default {
                 }
             }) 
             )
-            //console.log("여기실행ㅇㅋ?")
+            console.log(all.length)
             try{
                 
                 for(var i = 0;i <all.length;i++){
+                console.log(i)
                 await client.saying.create({
                     data:all[i]
                 })}

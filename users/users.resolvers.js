@@ -2,7 +2,7 @@ import client from "../client";
 
 export default{
     User:{
-        sayings:({id},{take,lastId})=>{
+        sayings:({id},{take,lastId})=>(
         client.user.findUnique({
             where:{id}
         }).sayings({
@@ -11,6 +11,6 @@ export default{
             ...(lastId && {cursor:{id:lastId}})
         })//나중에 search식으로 수정필요.
 
-    }
+    )
 }
 }
